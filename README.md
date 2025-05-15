@@ -1,9 +1,10 @@
 # 6-DOF Robotic Arm &#x1F916;
 
-A robotic arm with 6 degrees of freedom made out of 3d printed parts. The software stack is primarily present in a Docker container setup in Raspberry Pi OS. Its software side consists of a ROS2 pipeline written in Python with some C++ code in the Arduino IDE for controlling the stepper motors.
+A robotic arm with 6 degrees of freedom made out of 3D printed parts. The software stack is primarily present in a Docker container setup in Raspberry Pi OS. It consists of a ROS2 pipeline written in Python with some C++ code in the Arduino IDE for controlling the stepper motors.
 
 ## Current Functionality:
 
+* Currently only kinematic control has been established
 * Individual joint angles can be altered using the Joint_State_Publisher_Gui and the respective changes in the configuration can be seen in the 3d model on Rviz2
 * The desired joint angles can then be passed on to the hardware by pressing the "Enter" button in the GUI
 * The hardware model receives the joint angles and aligns itself to match the configuration of the 3D model visualised in RViz
@@ -21,7 +22,7 @@ A robotic arm with 6 degrees of freedom made out of 3d printed parts. The softwa
 * ROS2 Foxy
 * RViz2
 
-## Steps to replicate an identical model:
+## Steps to replicate this identical model:
 
 ### I. CAD Model:
 
@@ -33,9 +34,9 @@ SolidWorks was used for creating the individual parts and assembling them togeth
 
 [Cycloidal Gear design](https://ewhiteowls.com/2022/02/the-ultimate-guide-to-design-cycloidal-drives-the-beating-heart-of-robotic-arms/)
 
-### II. Setting up Raspi5 Env:
+### II. Setting up Pi Environment:
 
-Boot the raspi5 OS into the raspi by cloning the image into an usb. The image can be cloned into an usb by using [RaspberryPi Imager](https://www.raspberrypi.com/software/).
+Use Raspberry Pi Imager to flash the Raspberry Pi 5 OS image onto a USB drive. Then insert the USB into the Raspberry Pi 5 to boot from it
 Configure the Pi accordingly. Some key configuration steps to follow:
 
 
@@ -44,57 +45,58 @@ Configure the Pi accordingly. Some key configuration steps to follow:
 3. Enable the serial hardware port
 4. Change the forwarding from Wayland to X11
 
-Clone the repo:
+#### Clone the repo:
 
 ```bash
 git clone https://github.com/Avishkar1312/6-DOF-Robotic-Arm.git
 ```
 
-Go into the folder and build the Docker image
+#### Go into the folder and build the Docker image
 
 ```bash
 docker build -t your-image-name .  #Keep the name according to your choice
 ```
 ### III. Running the simulation:
 
-In one terminal run 
+#### In one terminal run 
 
 ```bash
 xhost +local:root
 ```
 This command allows the root user to access the X server. This would be essential to see the GUI output of Rviz2 on the screen.
 
-In another terminal, go into your work folder(in this case)
+#### In another terminal, go into your work folder(in this case)
 
 ```bash
 cd 6-DOF-Robotic-Arm-main 
 ```
 
-Run the container:
+#### Run the container:
 
 > ⚠️ **Disclaimer:** Connect the Arduino with Raspberry Pi5 before running the command
 ```bash
 docker run -it --rm --env DISPLAY=:0 --volume /tmp/.X11-unix:/tmp/.X11-unix --volume /path/on/host:/path/in/container --device /dev/ttyACM0 your_container_name
 ```
 
-Navigate to the working directory and source the ros2 environment
+#### Navigate to the working directory and source the ros2 environment
 
 ```bash
 source /opt/ros/foxy/setup.bash
 ```
 
-Build the packages
+#### Build the packages
 
 ```bash
 colcon build 
 ```
+This will create install,build and log folders in your workspace
 
-Source the workspace 
+#### Source the workspace 
 
 ```bash
 source install/setup.bash
 ```
-Launch the GUI and RViz window
+#### Launch the GUI and RViz window
 
 ```bash
 ros2 launch final_arm_urdf launch.py 
@@ -104,7 +106,49 @@ You would now be able to interact with the simulation using the Joint_State_Publ
 
 ### IV. Setting up the circuit connections
 
-For the circuit diagrams follow the images given in the [Circuit_diagrams](Circuit_diagrams/) folder. After completing the circuit and connecting the motors , follow the further intsructiuons to run the motor
+For the circuit diagrams, follow the images given in the [Circuit_diagrams](Circuit_diagrams/) folder. Copy the code given in the [Arduino_codes](Arduino_codes/) folder and paste it into your Arduino IDE. Upload this code into your respective Arduino.
+
+After completing the circuit and connecting the motors, follow the further instructions to run the motor
+
+1. Execute the steps of part III. (running the simulation) same as mentioned
+2. Open a new terminal and go into the Docker container
+
+```bash
+docker ps 
+```
+Then copy the generated container id and use it in 
+
+```bash
+docker exec -it <container_id> bash # Paste your container id 
+```
+
+This will take you to the same container. Now navigate again to your workspace and source it. After all this, run the following command
+
+```bash
+ros2 launch raspi motor_launch.py
+```
+This will launch the nodes for each motor at once.
+
+The hardware model is also ready to be executed. On pressing the "Enter" button on the GUI the specific configuration joint angles would be passed onto the hardware.
+
+## Hardware Configuration:
+
+| Joint | Gear type & Ratio | Motor |
+|-----------------|-----------------|-----------------|
+| Base Joint    | Cycloidal Gear (1:10)    | NEMA 17 Stepper motor    |
+| Shoulder Joint    | Snug fit(1:3.71)    | NEMA 17 Stepper motor with gearbox    |
+| Elbow Joint    | Snug Fit( Internal gears in servo)(1:1)   | Metal geared servo motor    |
+| Wrist joints(3)    | Snug Fit( Internal gears in servo)(1:1)    | Plastic geared servo motor    |
+
+## Future Work to be done:
+
+* Dynamic control is to be added
+* Thinking of venturing into upper-level control, such as voice control.
+
+## Open for more suggestions
+
+
+   
 
 
 
