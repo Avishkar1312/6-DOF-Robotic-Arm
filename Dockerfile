@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     ros-foxy-rviz2 \
     ros-foxy-gazebo-ros-pkgs \
     ros-foxy-moveit \
+    ros-foxy-xacro \
     python3-dev \
     python3-setuptools \
     i2c-tools \
