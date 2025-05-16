@@ -34,7 +34,11 @@ SolidWorks was used for creating the individual parts and assembling them togeth
 
 [Cycloidal Gear design](https://ewhiteowls.com/2022/02/the-ultimate-guide-to-design-cycloidal-drives-the-beating-heart-of-robotic-arms/)
 
-After you have assembled it on SolidWorks, you will have to generate a URDF file for the model. For this, use the [Solidworks to URDF Converter](https://wiki.ros.org/sw_urdf_exporter) which will create a ROS package with your model in it.
+[Modelling the robotic arm](https://www.youtube.com/playlist?list=PLeEzO_sX5H6TBD6EMGgV-qdhzxPY19m121)
+
+After you have assembled it on SolidWorks, you will have to assign the proper coordinate frames to each joint(Tutorial for this is present in the references).
+
+Once everything in  modelling is done, we will generate a URDF file for the model. For this, use the [Solidworks to URDF Converter](https://wiki.ros.org/sw_urdf_exporter) which will create a ROS package with your model in it.
 
 We ultimately want a ROS2 package so we would use this application to convert it into a ROS2 package 
 
