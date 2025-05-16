@@ -34,6 +34,12 @@ SolidWorks was used for creating the individual parts and assembling them togeth
 
 [Cycloidal Gear design](https://ewhiteowls.com/2022/02/the-ultimate-guide-to-design-cycloidal-drives-the-beating-heart-of-robotic-arms/)
 
+After you have assembled it on SolidWorks, you will have to generate a URDF file for the model. For this, use the [Solidworks to URDF Converter](https://wiki.ros.org/sw_urdf_exporter) which will create a ROS package with your model in it.
+
+We ultimately want a ROS2 package so we would use this application to convert it into a ROS2 package 
+
+[ROS2 URDF Converter](https://wiki.ros.org/sw_urdf_exporter)
+
 ### II. Setting up Pi Environment:
 
 Use Raspberry Pi Imager to flash the Raspberry Pi 5 OS image onto a USB drive. Then insert the USB into the Raspberry Pi 5 to boot from it
