@@ -9,7 +9,7 @@ A robotic arm with 6 degrees of freedom made out of 3D printed parts. The softwa
 * The desired joint angles can then be passed on to the hardware by pressing the "Enter" button in the GUI
 * The hardware model receives the joint angles and aligns itself to match the configuration of the 3D model visualised in RViz
 
-<img src="./img/Robotic_arm.drawio.svg" alt="Flowchart" width="600"/>
+<img src="./img/Robotic_arm.drawio.svg" alt="Flowchart" width="100%"/>
 
 ## Pic of the model:
 
